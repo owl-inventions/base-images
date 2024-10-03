@@ -1,0 +1,17 @@
+name: main-ci
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  strapi:
+    secrets: inherit
+    uses: ./.github/workflows/sub-publish-image.yml
+    with:
+      tag: ${{ github.sha }}
+      app: strapi
+      file: strapi/Dockerfile
+      context: strapi
