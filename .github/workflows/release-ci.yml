@@ -1,0 +1,32 @@
+name: release-ci
+
+concurrency:
+  group: prod
+  cancel-in-progress: false
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+
+  get_version:
+    runs-on: self-hosted
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
+    steps:
+      - name: Get version
+        id: get_version
+        run: echo version=${GITHUB_REF#refs/tags/} >> $GITHUB_OUTPUT
+
+  strapi:
+    needs:
+      - get_version
+    secrets: inherit
+    uses: ./.github/workflows/sub-publish-image.yml
+    with:
+      tag: ${{ needs.get_version.outputs.version }}
+      app: strapi
+      file: strapi/Dockerfile
+      context: strapi
