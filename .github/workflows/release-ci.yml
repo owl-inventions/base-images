@@ -30,3 +30,14 @@ jobs:
       app: strapi
       file: strapi/Dockerfile
       context: strapi
+
+  awscli:
+    needs:
+      - get_version
+    secrets: inherit
+    uses: ./.github/workflows/sub-publish-image.yml
+    with:
+      tag: ${{ needs.get_version.outputs.version }}
+      app: awscli
+      file: awscli/Dockerfile
+      context: awscli

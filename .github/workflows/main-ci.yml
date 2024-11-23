@@ -15,3 +15,13 @@ jobs:
       app: strapi
       file: strapi/Dockerfile
       context: strapi
+
+
+  awscli:
+    secrets: inherit
+    uses: ./.github/workflows/sub-publish-image.yml
+    with:
+      tag: ${{ github.sha }}
+      app: awscli
+      file: awscli/Dockerfile
+      context: awscli
